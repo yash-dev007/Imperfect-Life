@@ -163,7 +163,7 @@ export default function LithosSection() {
   return (
     <div
       id="lithos"
-      className="min-h-screen bg-white tracking-[-0.02em] lithos-scope"
+      className="min-h-screen bg-black tracking-[-0.02em] lithos-scope"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <section
