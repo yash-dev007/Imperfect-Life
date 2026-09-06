@@ -25,18 +25,18 @@ const steps = [
 
 export default function Process() {
   return (
-    <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
       {steps.map((step, i) => (
-        <Reveal key={step.n} delay={i * 0.1}>
-          <div className="liquid-glass rounded-[1.25rem] p-6 min-h-[200px] md:min-h-[240px] flex flex-col gap-6 h-full">
-            <div className="font-heading italic text-5xl tracking-[-2px] leading-none text-white/90">
+        <Reveal key={step.n} delay={i * 0.1} className="h-full">
+          <div className="rounded-none border border-white/10 bg-black p-6 sm:p-7 min-h-[260px] md:min-h-[300px] flex flex-col h-full">
+            <div className="font-heading italic text-[2.5rem] leading-none tracking-tight text-white">
               {step.n}
             </div>
-            <div className="flex-1" />
-            <h3 className="font-heading italic text-2xl md:text-3xl tracking-[-1px] leading-none text-white">
+            <div className="flex-1 min-h-16" />
+            <h3 className="font-heading italic text-2xl tracking-tight leading-none text-white">
               {step.title}
             </h3>
-            <p className="mt-3 text-sm text-white/80 font-body font-light leading-snug">
+            <p className="mt-3 text-[13px] text-white/55 font-body font-light leading-relaxed">
               {step.body}
             </p>
           </div>

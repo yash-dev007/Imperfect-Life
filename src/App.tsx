@@ -8,11 +8,12 @@ import Reveal from './components/Reveal';
 import LithosSection from './components/LithosSection';
 import Pillars from './components/Pillars';
 import Process from './components/Process';
+import AutonomousExecution from './components/AutonomousExecution';
+import FounderToolkit from './components/FounderToolkit';
+import Footer from './components/Footer';
 import RegisterForm from './components/RegisterForm';
 import {
   ArrowUpRight,
-  RocketIcon,
-  UsersIcon,
   CheckIcon,
   MenuIcon,
   CloseIcon,
@@ -35,8 +36,6 @@ const nextSteps = [
   'Mentor match, workshops, then demo day',
 ];
 
-const socials = ['X', 'Instagram', 'LinkedIn'];
-
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -45,8 +44,17 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setMenuOpen(false);
     };
+    // Auto-close if the viewport grows to desktop while the menu is open.
+    const mq = window.matchMedia('(min-width: 768px)');
+    const onViewport = (e: MediaQueryListEvent) => {
+      if (e.matches) setMenuOpen(false);
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    mq.addEventListener('change', onViewport);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      mq.removeEventListener('change', onViewport);
+    };
   }, [menuOpen]);
   useEffect(() => {
     // Scroll-spy: highlight the nav link of the section in view.
@@ -109,12 +117,13 @@ export default function App() {
       <section id="top" className="min-h-[100dvh] lg:h-screen overflow-hidden bg-black relative">
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 z-0 h-[62vh] overflow-hidden sm:left-1/2 sm:h-[120%] sm:w-[120%] sm:-translate-x-1/2"
+          className="absolute inset-x-0 bottom-0 z-0 h-[40vh] overflow-hidden sm:bottom-auto sm:left-1/2 sm:top-0 sm:h-[120%] sm:w-[120%] sm:-translate-x-1/2"
         >
           <FadingVideo
             src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260619_191346_9d19d66e-86a4-47f7-8dc6-712c1788c3b2.mp4"
-            className="h-full w-full object-cover object-top"
+            className="h-full w-full object-cover object-center sm:object-top"
           />
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent sm:hidden" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-black sm:hidden" />
         </div>
         <div
@@ -124,12 +133,8 @@ export default function App() {
 
         <div className="relative z-10 flex flex-col h-full">
           {/* Navbar */}
-          <nav aria-label="Primary" className="fixed top-4 left-0 right-0 z-50 flex justify-between items-center px-8 lg:px-16">
-            <div className="liquid-glass h-12 w-12 rounded-full flex items-center justify-center">
-              <span className="font-heading italic text-2xl text-white">e</span>
-            </div>
-
-            <div className="hidden md:flex liquid-glass rounded-full px-1.5 py-1.5 items-center gap-1">
+          <nav aria-label="Primary" className="fixed top-4 left-4 right-4 z-50 flex justify-end md:justify-center items-center">
+            <div className="hidden md:flex glass-pill rounded-full px-1.5 py-1.5 items-center gap-1">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
@@ -148,15 +153,13 @@ export default function App() {
               </a>
             </div>
 
-            <div aria-hidden="true" className="h-12 w-12 hidden md:block" />
-
             <button
               type="button"
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setMenuOpen((open) => !open)}
-              className="md:hidden liquid-glass h-12 w-12 rounded-full flex items-center justify-center text-white"
+              className="md:hidden glass-pill h-12 w-12 rounded-full flex items-center justify-center text-white touch-manipulation select-none cursor-pointer transition-transform duration-150 active:scale-95 shrink-0 mr-3"
             >
               {menuOpen ? (
                 <CloseIcon className="h-5 w-5" />
@@ -169,7 +172,7 @@ export default function App() {
           {menuOpen && (
             <div
               id="mobile-menu"
-              className="md:hidden fixed top-20 left-4 right-4 z-50 liquid-glass-strong rounded-[1.5rem] p-3"
+              className="md:hidden fixed top-20 left-4 right-4 z-50 liquid-glass rounded-[1.5rem] p-3 menu-panel"
             >
               <div className="flex flex-col">
                 {navLinks.map((link) => (
@@ -195,9 +198,9 @@ export default function App() {
           )}
 
           {/* Main content */}
-          <div id="main" className="flex-1 flex flex-col items-center justify-center pt-24 px-4 text-center min-h-0 py-8">
+          <div id="main" className="flex-1 flex flex-col items-center justify-center pt-24 px-4 text-center min-h-0 pb-[24vh] sm:py-8 sm:pt-24 lg:-translate-y-16">
             <Reveal delay={0.4}>
-              <div className="liquid-glass rounded-full flex items-center justify-center gap-2 py-1.5 pl-1.5 pr-4 max-w-full flex-wrap">
+              <div className="glass-pill rounded-full flex items-center justify-center gap-2 py-1.5 pl-1.5 pr-4 max-w-full flex-wrap">
                 <span className="bg-white text-black rounded-full px-2.5 py-0.5 text-xs font-medium font-body shrink-0">
                   Open
                 </span>
@@ -242,34 +245,11 @@ export default function App() {
                 </a>
               </div>
             </Reveal>
-
-            <Reveal delay={1.3}>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <div className="liquid-glass p-5 w-[220px] rounded-[1.25rem] text-left">
-                  <RocketIcon className="h-6 w-6 text-white" />
-                  <div className="text-4xl font-heading italic tracking-[-1px] leading-none mt-4 text-white">
-                    3-Step
-                  </div>
-                  <div className="mt-2 text-xs text-white/80 font-body font-light leading-snug">
-                    Register → Mentor → Fund In One Track
-                  </div>
-                </div>
-                <div className="liquid-glass p-5 w-[220px] rounded-[1.25rem] text-left">
-                  <UsersIcon className="h-6 w-6 text-white" />
-                  <div className="text-4xl font-heading italic tracking-[-1px] leading-none mt-4 text-white">
-                    1:1
-                  </div>
-                  <div className="mt-2 text-xs text-white/80 font-body font-light leading-snug">
-                    Mentorship With Founders & Operators
-                  </div>
-                </div>
-              </div>
-            </Reveal>
           </div>
 
           {/* Bottom track bar */}
           <Reveal delay={1.4} className="hidden lg:flex flex-col items-center gap-4 pb-8">
-            <div className="liquid-glass rounded-full px-5 py-2">
+            <div className="glass-pill rounded-full px-5 py-2">
               <span className="text-xs md:text-sm text-white/80 font-body">
                 One track, end to end
               </span>
@@ -339,8 +319,14 @@ export default function App() {
             className="font-heading italic text-6xl md:text-7xl lg:text-[6rem] leading-[0.9] tracking-[-3px] text-white"
           />
           <Process />
+          <Reveal className="mt-14">
+            <AutonomousExecution />
+          </Reveal>
         </div>
       </section>
+
+      {/* ---------- Section 3b: Founder toolkit ---------- */}
+      <FounderToolkit />
 
       {/* ---------- Section 4: Register ---------- */}
       <section id="register" className="overflow-hidden bg-black relative">
@@ -362,7 +348,7 @@ export default function App() {
             <ul className="mt-8 flex flex-col gap-4">
               {nextSteps.map((step) => (
                 <li key={step} className="flex items-center gap-3">
-                  <span className="liquid-glass h-8 w-8 rounded-full flex items-center justify-center shrink-0">
+                  <span className="glass-pill h-8 w-8 rounded-full flex items-center justify-center shrink-0">
                     <CheckIcon className="h-4 w-4 text-white" />
                   </span>
                   <span className="text-sm font-body text-white/85">{step}</span>
@@ -378,154 +364,7 @@ export default function App() {
       {/* ---------- Section 5: Lithos ---------- */}
       <LithosSection />
 
-      <footer id="contact" className="relative overflow-hidden bg-black">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black to-transparent"
-        />
-        <div className="relative px-5 sm:px-8 lg:px-12 pt-10 md:pt-12 pb-8">
-          {/* CTA panel */}
-          <div className="relative">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -inset-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.07),transparent_70%)]"
-            />
-            <div className="relative liquid-glass rounded-[1.5rem] p-8 md:p-12 flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12">
-            <div className="flex-1">
-              <p className="text-sm font-body text-white/80 mb-4">
-                {'// Get funded'}
-              </p>
-              <p className="font-heading italic text-4xl sm:text-5xl md:text-6xl leading-[0.95] tracking-[-2px] text-white">
-                Have a startup? Let&apos;s build it.
-              </p>
-              <p className="mt-4 text-sm md:text-base text-white/75 max-w-lg font-body font-light leading-relaxed">
-                Registration takes five minutes. Mentorship, guidance, and
-                investor access follow — all in one student-run track.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-4 shrink-0">
-              <a
-                href="#register"
-                className="flex items-center justify-center gap-1 bg-white text-black rounded-full px-7 py-3 text-sm font-medium font-body lift hover:shadow-lg hover:shadow-white/20 whitespace-nowrap"
-              >
-                Register Your Startup
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-              <a
-                href="mailto:hello@ecell.example.com"
-                className="flex items-center justify-center gap-1 liquid-glass-strong rounded-full px-7 py-3 text-sm font-medium font-body text-white lift whitespace-nowrap"
-              >
-                Talk to us
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-            </div>
-            </div>
-          </div>
-
-          {/* Link columns */}
-          <div className="mt-10 md:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            <div className="col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-3">
-                <span className="liquid-glass h-10 w-10 rounded-full flex items-center justify-center">
-                  <span
-                    aria-hidden="true"
-                    className="font-heading italic text-xl text-white"
-                  >
-                    e
-                  </span>
-                </span>
-                <span className="font-heading italic text-2xl text-white">
-                  E-Cell
-                </span>
-              </div>
-              <p className="mt-4 text-sm font-body font-light text-white/60 leading-relaxed max-w-[28ch]">
-                The student initiative turning campus ideas into funded
-                startups.
-              </p>
-            </div>
-            <nav aria-label="Program">
-              <p className="text-xs font-medium font-body uppercase tracking-[0.14em] text-white/50">
-                Program
-              </p>
-              <ul className="mt-4 flex flex-col gap-3">
-                {navLinks.slice(0, 4).map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm font-body text-white/75 transition-colors duration-200 hover:text-white"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <nav aria-label="Track">
-              <p className="text-xs font-medium font-body uppercase tracking-[0.14em] text-white/50">
-                Track
-              </p>
-              <ul className="mt-4 flex flex-col gap-3">
-                {[
-                  { label: 'Apply now', href: '#register' },
-                  { label: 'Mentorship', href: '#pillars' },
-                  { label: 'Funding', href: '#pillars' },
-                  { label: 'Demo day', href: '#process' },
-                ].map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm font-body text-white/75 transition-colors duration-200 hover:text-white"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <div>
-              <p className="text-xs font-medium font-body uppercase tracking-[0.14em] text-white/50">
-                Connect
-              </p>
-              <ul className="mt-4 flex flex-col gap-3">
-                <li>
-                  <a
-                    href="mailto:hello@ecell.example.com"
-                    className="text-sm font-body text-white/75 transition-colors duration-200 hover:text-white break-all"
-                  >
-                    hello@ecell.example.com
-                  </a>
-                </li>
-                {socials.map((social) => (
-                  <li key={social}>
-                    <a
-                      href="#top"
-                      aria-label={`${social} (placeholder)`}
-                      className="group inline-flex items-center gap-1 text-sm font-body text-white/75 transition-colors duration-200 hover:text-white"
-                    >
-                      {social}
-                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-xs text-white/50 font-body text-center sm:text-left">
-              © 2026 E-Cell — Ideas in. Startups out.
-            </span>
-            <a
-              href="#top"
-              className="flex items-center gap-1 text-sm font-medium font-body text-white/70 transition-colors duration-200 hover:text-white"
-            >
-              Back to top
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -246,7 +246,7 @@ export default function LithosSection() {
         <div
           ref={hintRef}
           aria-hidden="true"
-          className="spotlight-hint liquid-glass rounded-full px-4 py-2 absolute left-1/2 bottom-64 sm:bottom-40 z-40 pointer-events-none"
+          className="spotlight-hint glass-pill rounded-full px-4 py-2 absolute left-1/2 bottom-64 sm:bottom-40 z-40 pointer-events-none"
         >
           <span className="text-[11px] tracking-wide text-white/85 whitespace-nowrap">
             Move to reveal hidden strata

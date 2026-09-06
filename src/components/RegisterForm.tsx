@@ -109,8 +109,8 @@ export default function RegisterForm() {
   if (submitted) {
     return (
       <Reveal delay={0.05}>
-        <div className="liquid-glass-strong rounded-[1.25rem] p-8 md:p-10 text-center">
-        <div className="liquid-glass h-12 w-12 rounded-full flex items-center justify-center mx-auto">
+        <div className="liquid-glass rounded-[1.25rem] p-8 md:p-10 text-center">
+        <div className="glass-pill h-12 w-12 rounded-full flex items-center justify-center mx-auto">
           <CheckIcon className="h-6 w-6 text-white" />
         </div>
         <h3 className="mt-5 font-heading italic text-3xl md:text-4xl tracking-[-1px] text-white">
